@@ -13,7 +13,7 @@ const dishes = [
   { name: 'Khichdi with Ghee', moods: ['sad', 'tired'], diet: 'veg', cuisine: 'Indian', price: 130, spice: 'mild' },
 ];
 
-// TODO: replace with REAL Bhilai restaurants, areas and links before your demo.
+// TODO: replace with REAL Bhilai restaurants, areas and links.
 const restaurantData = [
   { name: 'Sample Restaurant 1', area: 'Sector 6', address: 'Replace me', dishNames: ['Veg Momos', 'Spicy Chilli Paneer'], swiggyUrl: '', zomatoUrl: '' },
   { name: 'Sample Restaurant 2', area: 'Supela', address: 'Replace me', dishNames: ['Paneer Biryani', 'Chicken Biryani'], swiggyUrl: '', zomatoUrl: '' },
