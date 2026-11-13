@@ -10,14 +10,15 @@ const dishes = [
   { name: 'Chocolate Brownie', moods: ['sad', 'stressed'], diet: 'veg', cuisine: 'Dessert', price: 150, spice: 'mild' },
   { name: 'Masala Dosa', moods: ['bored', 'happy'], diet: 'veg', cuisine: 'South Indian', price: 110, spice: 'medium' },
   { name: 'Spicy Chilli Paneer', moods: ['spicy', 'bored'], diet: 'veg', cuisine: 'Indo-Chinese', price: 200, spice: 'hot' },
-  { name: 'Khichdi with Ghee', moods: ['sad', 'tired'], diet: 'veg', cuisine: 'Indian', price: 130, spice: 'mild' },
+  { name: 'McChicken Burger Happy Meal', moods: ['sad', 'tired'], diet: 'non-veg', cuisine: 'Fast Food', price: 338.99, spice: 'mild' },
 ];
 
 // TODO: replace with REAL Bhilai restaurants, areas and links.
 const restaurantData = [
   { name: 'Sample Restaurant 1', area: 'Sector 6', address: 'Replace me', dishNames: ['Veg Momos', 'Spicy Chilli Paneer'], swiggyUrl: '', zomatoUrl: '' },
   { name: 'Sample Restaurant 2', area: 'Supela', address: 'Replace me', dishNames: ['Paneer Biryani', 'Chicken Biryani'], swiggyUrl: '', zomatoUrl: '' },
-  { name: 'Sample Restaurant 3', area: 'Sector 6', address: 'Replace me', dishNames: ['Chocolate Brownie', 'Masala Dosa', 'Khichdi with Ghee'], swiggyUrl: '', zomatoUrl: '' },
+  { name: 'Sample Restaurant 3', area: 'Sector 6', address: 'Replace me', dishNames: ['Chocolate Brownie', 'Masala Dosa'], swiggyUrl: '', zomatoUrl: '' },
+  { name: 'McDonald's', area: 'Smriti Nagar', address: 'Surya Treasure Island Mall, Junwani Rd, near Apollo Hospital', dishNames: ['McChicken Burger Happy Meal'], swiggyUrl: 'https://www.swiggy.com/city/bhilai/mcdonalds-nehru-nagar-durg-bhilai-rest471538', zomatoUrl: '' },
 ];
 
 await mongoose.connect(process.env.MONGO_URI);
