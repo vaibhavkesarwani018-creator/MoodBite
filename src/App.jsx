@@ -15,6 +15,7 @@ const dishes = [
     emoji: "🍕",
     cuisine: "Italian",
     price: 250,
+    diet:"Vegetarian",
     moods: ["Happy", "Celebratory"],
     description: "A cheesy treat for a good day."
   },
@@ -61,7 +62,12 @@ const dishes = [
 ];
 function App() {
   const [selectedMood, setSelectedMood]=useState("");
-  const recommendedDishes = dishes.filter((dish)=> dish.moods.includes(selectedMood));
+  const [selectedDiet, setSelectedDiet]=useState("All")
+  const recommendedDishes = dishes.filter((dish)=> { 
+    const matchesmood=dish.moods.includes(selectedMood);
+    const matchesdiet=selectedDiet==="All" || dish.diet===selectedDiet;
+    return matchesmood && matchesdiet;
+  })
   return (
       <div className="app">
         <header className="navbar">
@@ -87,7 +93,19 @@ function App() {
 
               }
             </div>
-            <button className="start-btn">Get Started →</button>
+            {/* <button className="start-btn">Get Started →</button> */}
+            {selectedMood && (
+              <div className="filters">
+                <label htmlFor="diet">Dietary Preference:</label>
+                <select id="diet"
+                value={selectedDiet}
+                onChange={(event)=> setSelectedDiet(event.target.value)}>
+                  <option value="All"> All</option>
+                  <option value="Vegetarian">Vegetrarian</option>
+                  <option value="Non-vegetarian">Non-Vegetarian</option>
+                </select>
+              </div>
+            )}
             {selectedMood && (
               <section className="recommendations">
                 <h2>Food picks for your mood</h2>
@@ -98,8 +116,8 @@ function App() {
                       <span className="food-emoji">{dish.emoji}</span>
                       <h3>{dish.name}</h3>
                       <p>{dish.description}</p>
-                      <p>{dish.cuisine}</p>
-                      <p>{dish.price}</p>
+                      <p className="cuisine">{dish.cuisine}</p>
+                      <p className="price">Rs.{dish.price}</p>
                     </div>
                   )
                   )
