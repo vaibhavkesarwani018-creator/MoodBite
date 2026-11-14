@@ -1,135 +1,224 @@
+
 import { useState } from "react";
 import "./App.css";
+
+
 const moods = [
-  { name: "Happy", emoji: "😊", description: "Celebrate your good mood" },
-  { name: "Sad", emoji: "😔", description: "Find some comfort food" },
-  { name: "Stressed", emoji: "😫", description: "Take a relaxing food break" },
-  { name: "Tired", emoji: "😴", description: "Get something energizing" },
-  { name: "Bored", emoji: "🥱", description: "Try something exciting" },
-  { name: "Spicy Cravings", emoji: "🌶️", description: "Bring on the spice" },
-  { name: "Celebratory", emoji: "🎉", description: "Treat yourself today" },
+    {
+        name: "Cheesy",
+        value: "cheesy",
+        emoji: "🧀",
+        description: "Give me something cheesy"
+    },
+    {
+        name: "Spicy",
+        value: "spicy",
+        emoji: "🌶️",
+        description: "Bring on the heat"
+    },
+    {
+        name: "Celebratory",
+        value: "celebratory",
+        emoji: "🎉",
+        description: "Time for a buffet"
+    },
+    {
+        name: "Period Cravings",
+        value: "period-cravings",
+        emoji: "☕",
+        description: "Something warm and comforting"
+    },
+    {
+        name: "Sweet",
+        value: "sweet",
+        emoji: "🍰",
+        description: "I need something sweet"
+    }
 ];
-const dishes = [
-  {
-    name: "Pizza",
-    emoji: "🍕",
-    cuisine: "Italian",
-    price: 250,
-    diet:"Vegetarian",
-    moods: ["Happy", "Celebratory"],
-    description: "A cheesy treat for a good day."
-  },
-  {
-    name: "Masala Dosa",
-    emoji: "🥞",
-    cuisine: "South Indian",
-    price: 100,
-    moods: ["Happy", "Bored"],
-    description: "A crispy dosa with flavorful masala."
-  },
-  {
-    name: "Tomato Soup",
-    emoji: "🍲",
-    cuisine: "Indian",
-    price: 120,
-    moods: ["Sad", "Stressed"],
-    description: "A warm and comforting bowl of soup."
-  },
-  {
-    name: "Spicy Noodles",
-    emoji: "🍜",
-    cuisine: "Asian",
-    price: 180,
-    moods: ["Spicy Cravings", "Bored"],
-    description: "Noodles with a spicy kick."
-  },
-  {
-    name: "Chocolate Cake",
-    emoji: "🍰",
-    cuisine: "Dessert",
-    price: 150,
-    moods: ["Sad", "Celebratory"],
-    description: "A sweet treat for a little comfort."
-  },
-  {
-    name: "Veg Sandwich",
-    emoji: "🥪",
-    cuisine: "Continental",
-    price: 90,
-    moods: ["Tired", "Stressed"],
-    description: "A quick and simple bite."
-  }
-];
+
+
 function App() {
-  const [selectedMood, setSelectedMood]=useState("");
-  const [selectedDiet, setSelectedDiet]=useState("All")
-  const recommendedDishes = dishes.filter((dish)=> { 
-    const matchesmood=dish.moods.includes(selectedMood);
-    const matchesdiet=selectedDiet==="All" || dish.diet===selectedDiet;
-    return matchesmood && matchesdiet;
-  })
+  const [selectedMood, setSelectedMood] = useState("");
+  const [restaurants, setRestaurants] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [searched, setSearched] = useState(false);
+
+  async function getRecommendations() {
+    if (!selectedMood) {
+      setError("Please select a mood first.");
+      return;
+    }
+
+    setLoading(true);
+    setError("");
+    setRestaurants([]);
+    setSearched(false);
+
+    try {
+      const url = `http://localhost:5001/api/recommend?mood=${encodeURIComponent(selectedMood)}`;
+
+      const response = await fetch(url);
+
+      if (!response.ok) {
+        throw new Error("Something went wrong");
+      }
+
+      const data = await response.json();
+
+      setRestaurants(data);
+      setSearched(true);
+
+    } catch (err) {
+      setError("Could not connect to the server. Check whether the backend is running.");
+      console.log(err);
+    }
+
+    setLoading(false);
+  }
+
   return (
-      <div className="app">
-        <header className="navbar">
-            <h2 className="logo">MoodBite</h2>
-            <span>Food for your mood</span>
-        </header>
-        <main className="hero">
-            <p className="tagline">YOUR MOOD, YOUR FOOD</p>
-            <h1>Cravings meet your mood.</h1>
-            <p className="description">
-            Find the perfect food for how you feel today.
-            </p>
-            <h2>How are you feeling today</h2>
-            <div className="mood-grid">
-              {moods.map((mood)=>(
-                <div className={`mood-card ${selectedMood===mood.name ? "selected":""}`} key={mood.name}
-                onClick={()=> setSelectedMood(mood.name)}>
-                  <span className="mood-emoji">{mood.emoji}</span>
-                  <h3>{mood.name}</h3>
-                  <p>{mood.description}</p>
-                </div>
-              ))
+    <div className="app">
 
-              }
+      <header className="navbar">
+        <h2 className="logo">MoodBite</h2>
+        <span>Food for your mood</span>
+      </header>
+
+      <main className="hero">
+
+        <p className="tagline">YOUR MOOD, YOUR FOOD</p>
+
+        <h1>Cravings meet your mood.</h1>
+
+        <p className="description">
+          Find the perfect food for how you feel today.
+        </p>
+
+        <h2>How are you feeling today?</h2>
+
+        <div className="mood-grid">
+          {moods.map((mood) => (
+            <div
+              className={`mood-card ${selectedMood === mood.value ? "selected" : ""}`}
+              key={mood.name}
+              onClick={() => setSelectedMood(mood.value)}
+            >
+              <span className="mood-emoji">{mood.emoji}</span>
+              <h3>{mood.name}</h3>
+              <p>{mood.description}</p>
             </div>
-            {/* <button className="start-btn">Get Started →</button> */}
-            {selectedMood && (
-              <div className="filters">
-                <label htmlFor="diet">Dietary Preference:</label>
-                <select id="diet"
-                value={selectedDiet}
-                onChange={(event)=> setSelectedDiet(event.target.value)}>
-                  <option value="All"> All</option>
-                  <option value="Vegetarian">Vegetrarian</option>
-                  <option value="Non-vegetarian">Non-Vegetarian</option>
-                </select>
-              </div>
-            )}
-            {selectedMood && (
-              <section className="recommendations">
-                <h2>Food picks for your mood</h2>
+          ))}
+        </div>
 
-                <div className="food-grid">
-                  {recommendedDishes.map((dish)=>(
-                    <div className="food-card" key={dish.name}>
-                      <span className="food-emoji">{dish.emoji}</span>
-                      <h3>{dish.name}</h3>
-                      <p>{dish.description}</p>
-                      <p className="cuisine">{dish.cuisine}</p>
-                      <p className="price">Rs.{dish.price}</p>
+        <button
+          className="start-btn"
+          onClick={getRecommendations}
+          disabled={!selectedMood || loading}
+        >
+          {loading ? "Finding places..." : "Get Started →"}
+        </button>
+
+        {error && <p className="error-message">{error}</p>}
+
+        {searched && restaurants.length === 0 && !error && (
+          <p>No matching restaurants found. Try another mood!</p>
+        )}
+
+        {restaurants.length > 0 && (
+          <section className="recommendations">
+
+            <h2>Places for your mood</h2>
+
+            <div className="restaurant-grid">
+
+              {restaurants.map((restaurant) => (
+                <div className="restaurant-card" key={restaurant._id}>
+
+                  <h3>{restaurant.name}</h3>
+
+                  <p>
+                    <strong>Area:</strong> {restaurant.area}
+                  </p>
+
+                  <p>
+                    <strong>Address:</strong> {restaurant.address}
+                  </p>
+
+                  
+                    <h4>Dishes available:</h4>
+
+                    {restaurant.dishes && restaurant.dishes.length > 0 ? (
+
+                        <ul>
+                            {restaurant.dishes.map((dish) => (
+                                <li key={dish._id}>
+                                    {dish.name} - ₹{dish.price}
+                                </li>
+                            ))}
+                        </ul>
+
+                    ) : (
+
+                        <p>
+                            Buffet menu may vary.
+                            Contact the restaurant for current details.
+                        </p>
+
+                    )}
+
+                    <div className="restaurant-links">
+
+                        {restaurant.mapUrl && (
+                            <a
+                                href={restaurant.mapUrl}
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                View Location
+                            </a>
+                        )}
+
+                        {restaurant.swiggyUrl && (
+                            <a
+                                href={restaurant.swiggyUrl}
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                Swiggy
+                            </a>
+                        )}
+
+                        {restaurant.zomatoUrl && (
+                            <a
+                                href={restaurant.zomatoUrl}
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                Zomato
+                            </a>
+                        )}
+
                     </div>
-                  )
-                  )
 
-                  }
+
+                  <a
+                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(restaurant.name + " " + restaurant.address)}`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    View Location on Google Maps →
+                  </a>
+
                 </div>
-              </section>
-            )
-            }
+              ))}
 
-        </main>
-      </div>
+            </div>
+          </section>
+        )}
+
+      </main>
+    </div>
   );
 }
 
