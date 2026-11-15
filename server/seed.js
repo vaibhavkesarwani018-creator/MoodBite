@@ -5,10 +5,8 @@ import Restaurant from './models/Restaurant.js';
 import Dish from './models/Dish.js';
 
 const restaurants = [
-
-    // =========================
+    
     // BHILAI
-    // =========================
 
     {
         name: 'Subway',
@@ -141,9 +139,7 @@ const restaurants = [
     },
 
 
-    // =========================
     // JABALPUR
-    // =========================
 
     {
         name: 'Subway',
