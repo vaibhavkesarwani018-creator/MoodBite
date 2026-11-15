@@ -1,8 +1,8 @@
 
 import { Router } from 'express';
 
-import Dish from '../models/Dish.js';
 import Restaurant from '../models/Restaurant.js';
+import '../models/Dish.js';
 
 const router = Router();
 
@@ -10,119 +10,68 @@ router.get('/', async (req, res) => {
 
     try {
 
-        const { mood, area, diet, maxPrice } = req.query;
+        const { mood, city, area } = req.query;
 
-        // Check whether a mood was selected
-        if (!mood) {
+        if (!mood || !city) {
             return res.status(400).json({
-                message: 'Please select a mood'
+                message: 'Please select both mood and city'
             });
         }
 
         const moodValue = mood.toLowerCase().trim();
+        const cityValue = city.toLowerCase().trim();
 
-        // Celebratory means buffet restaurants
-        if (moodValue === 'celebratory') {
+        const allowedCities = ['bhilai', 'jabalpur'];
 
-            const filter = {
-                buffetAvailable: true
-            };
-
-            if (area) {
-                filter.area = area;
-            }
-
-            const restaurants = await Restaurant.find(filter)
-                .populate('dishes');
-
-            return res.json(restaurants);
+        if (!allowedCities.includes(cityValue)) {
+            return res.status(400).json({
+                message: 'Invalid city selected'
+            });
         }
 
-        // These are the remaining valid moods
         const allowedMoods = [
             'cheesy',
             'spicy',
+            'celebratory',
             'period-cravings',
             'sweet'
         ];
 
         if (!allowedMoods.includes(moodValue)) {
             return res.status(400).json({
-                message: 'Invalid mood'
+                message: 'Invalid mood selected'
             });
         }
 
-        // Find dishes suitable for the selected mood
-        const dishFilter = {
-            moods: moodValue
-        };
-
-        if (diet) {
-            dishFilter.diet = diet;
-        }
-
-        if (maxPrice !== undefined && maxPrice !== '') {
-
-            const price = Number(maxPrice);
-
-            if (!Number.isFinite(price) || price < 0) {
-                return res.status(400).json({
-                    message: 'Invalid price'
-                });
-            }
-
-            dishFilter.price = {
-                $lte: price
-            };
-        }
-
-        const matchingDishes = await Dish.find(dishFilter);
-
-        if (matchingDishes.length === 0) {
-            return res.json([]);
-        }
-
-        // Get the IDs of matching dishes
-        const dishIds = matchingDishes.map(
-            dish => dish._id
-        );
-
-        // Find restaurants serving those dishes
-        const restaurantFilter = {
-            dishes: {
-                $in: dishIds
-            }
+        const filter = {
+            city: cityValue
         };
 
         if (area) {
-            restaurantFilter.area = area;
+            filter.area = area.trim();
         }
 
-        const restaurants = await Restaurant.find(restaurantFilter)
+        if (moodValue === 'celebratory') {
+
+            filter.buffetAvailable = true;
+
+        } else {
+
+            filter.moods = moodValue;
+
+        }
+
+        const restaurants = await Restaurant.find(filter)
             .populate('dishes');
 
-        // Display only the dishes matching the selected mood
-        const matchingIds = matchingDishes.map(
-            dish => dish._id.toString()
-        );
-
-        const results = restaurants.map(restaurant => {
-
-            const restaurantData = restaurant.toObject();
-
-            restaurantData.dishes = restaurantData.dishes.filter(
-                dish => matchingIds.includes(dish._id.toString())
-            );
-
-            return restaurantData;
-        });
-
-        res.json(results);
+        res.json(restaurants);
 
     } catch (error) {
 
+        console.log(error);
+
         res.status(500).json({
-            message: error.message
+            message: 'Something went wrong while finding restaurants'
         });
 
     }
