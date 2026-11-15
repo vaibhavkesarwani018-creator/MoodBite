@@ -17,7 +17,7 @@ const restaurants = [
         buffetAvailable: false,
         mapUrl: 'https://www.google.com/maps/place/Subway+Nehru+Nagar+Bhilai/@21.2186297,81.313259,15z/data=!4m10!1m2!2m1!1ssubway!3m6!1s0x3a293dc42ae5375b:0xb9b4836525ee5f1d!8m2!3d21.2051714!4d81.3231518!15sCgZzdWJ3YXkiA4gBAVoIIgZzdWJ3YXmSAQ1zYW5kd2ljaF9zaG9w4AEA!16s%2Fg%2F11ntl7ph82?entry=ttu&g_ep=EgoyMDI2MTExMC4wIKXMDSoASAFQAw%3D%3D',
         swiggyUrl: 'https://www.swiggy.com/city/bhilai/subway-nehru-nagar-rest1401492',
-        zomatoUrl: ''
+        zomatoUrl: 'https://zomato.onelink.me/xqzv/ya1zw9x1'
     },
 
     {
@@ -37,7 +37,7 @@ const restaurants = [
         buffetAvailable: false,
         mapUrl: 'https://www.google.com/maps/place/Grand+Dhillon/@21.2006517,81.3211213,17z/data=!4m9!3m8!1s0x3a293cd92ea42ce7:0x92eca40e0a2bf89b!5m2!4m1!1i2!8m2!3d21.2006467!4d81.3236962!16s%2Fg%2F1tffmr_p?hl=en&entry=ttu',
         swiggyUrl: 'https://www.swiggy.com/city/bhilai/hotel-grand-dhillon-priyadarsani-parisar-west-nehru-nagar-chowk-bhilai-rest100068',
-        zomatoUrl: ''
+        zomatoUrl: 'https://www.zomato.com/durg-bhilai/the-grand-dhillon-nehru-nagar/order'
     },
 
     {
@@ -46,7 +46,7 @@ const restaurants = [
         moods: ['spicy'],
         buffetAvailable: false,
         mapUrl: 'https://www.google.com/maps/place/Kake+Di+Hatti+Bhilai/@21.2049966,81.3206288,17z/data=!3m1!4b1!4m6!3m5!1s0x3a293df252e92c1f:0xf7bcbc07af97131f!8m2!3d21.2049916!4d81.3232037!16s%2Fg%2F11vzgp06sn?hl=en&entry=ttu',
-        swiggyUrl: '',
+        swiggyUrl: 'https://www.swiggy.com/city/bhilai/kake-di-hatti-soni-bhawan-nehru-nagar-rest898003',
         zomatoUrl: 'https://www.zomato.com/durg-bhilai/kake-di-hatti-2-nehru-nagar/order'
     },
 
@@ -57,7 +57,7 @@ const restaurants = [
         buffetAvailable: false,
         mapUrl: "https://www.google.com/maps/place/Haldiram's+-+Surya+Treasure+Island+Mall/@21.2190322,81.3205587,17z/data=!3m1!4b1!4m6!3m5!1s0x3a293d1f8d925b3f:0xe10cb06de5ea191a!8m2!3d21.2190272!4d81.3231336!16s%2Fg%2F11t_sg_hsz?hl=en&entry=ttu",
         swiggyUrl: 'https://www.swiggy.com/city/bhilai/haldirams-restaurant-junwani-road-nehru-nagar-rest726509',
-        zomatoUrl: ''
+        zomatoUrl: 'https://www.zomato.com/durg-bhilai/haldirams-restaurant-nehru-nagar/order'
     },
 
     {
